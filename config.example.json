@@ -1,0 +1,153 @@
+{
+  "name": "Warp comparison",
+  "seed": 42,
+  "requests": 1000,
+  "timeout_seconds": 30,
+  "country_header": "X-Bench-Country",
+  "countries": [
+    "NL",
+    "GB",
+    "US"
+  ],
+  "currency_cookie": "currency",
+  "currencies": [
+    "",
+    "EUR",
+    "GBP",
+    "USD"
+  ],
+  "session_cookie_env": {
+    "logged_in": "BENCH_COOKIE_LOGGED_IN"
+  },
+  "common_cookie_env": "",
+  "user_agent_env": {
+    "desktop": "BENCH_UA_DESKTOP",
+    "mobile": "BENCH_UA_MOBILE",
+    "tablet": "BENCH_UA_TABLET"
+  },
+  "headers": {},
+  "campaign": {
+    "enabled": true,
+    "probability": 0.5,
+    "parameters": [
+      "gclid",
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term"
+    ]
+  },
+  "targets": [
+    {
+      "name": "WordPress",
+      "base_url": "https://wordpress.example.com"
+    },
+    {
+      "name": "Warp",
+      "base_url": "https://warp.example.com"
+    },
+    {
+      "name": "Warp ASR",
+      "base_url": "https://asr.example.com"
+    }
+  ],
+  "sitemap": {
+    "url": "https://wordpress.example.com/product-sitemap.xml",
+    "paths_file": "",
+    "path_prefix": "/product/",
+    "max_urls": 0
+  },
+  "cases": [
+    {
+      "name": "products mixed states",
+      "kind": "sitemap",
+      "requests": 1000,
+      "method": "GET",
+      "cache_mode": "as configured"
+    },
+    {
+      "name": "cached ajax logged out",
+      "kind": "endpoint",
+      "path": "/wp-admin/admin-ajax.php?action=REPLACE_WITH_YOUR_ACTION",
+      "method": "GET",
+      "requests": 100,
+      "device": "desktop",
+      "country": "NL",
+      "session": "logged_out",
+      "currency": "EUR",
+      "cache_mode": "as configured",
+      "headers": {
+        "Accept": "*/*",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-Fetch-User": "",
+        "Upgrade-Insecure-Requests": "",
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    },
+    {
+      "name": "cached ajax logged in",
+      "kind": "endpoint",
+      "path": "/wp-admin/admin-ajax.php?action=REPLACE_WITH_YOUR_ACTION",
+      "method": "GET",
+      "requests": 100,
+      "device": "desktop",
+      "country": "NL",
+      "session": "logged_in",
+      "currency": "EUR",
+      "cache_mode": "as configured",
+      "headers": {
+        "Accept": "*/*",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "Sec-Fetch-User": "",
+        "Upgrade-Insecure-Requests": "",
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    },
+    {
+      "name": "throughput page",
+      "kind": "endpoint",
+      "path": "/",
+      "method": "GET",
+      "requests": 100,
+      "device": "desktop",
+      "country": "NL",
+      "session": "logged_out",
+      "currency": "",
+      "cache_mode": "as configured",
+      "campaign_enabled": false
+    }
+  ],
+  "wrk": [
+    {
+      "name": "page 20 connections",
+      "case": "throughput page",
+      "threads": 1,
+      "connections": 20,
+      "duration_seconds": 10
+    },
+    {
+      "name": "page 100 connections",
+      "case": "throughput page",
+      "threads": 1,
+      "connections": 100,
+      "duration_seconds": 10
+    },
+    {
+      "name": "page 250 connections",
+      "case": "throughput page",
+      "threads": 1,
+      "connections": 250,
+      "duration_seconds": 10
+    }
+  ],
+  "publish": {
+    "url": "",
+    "token_env": "BENCH_TOKEN",
+    "attempts": 3
+  }
+}
